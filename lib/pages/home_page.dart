@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
+//当我们滚动的距离大于 100 的时候，听不的 bar 就完全变成白色
+const APPBAR_SCROLL_OFFSET = 100;
+
 class HomePage extends StatefulWidget{
   @override
   _HomePageState createState() => _HomePageState();
@@ -9,8 +12,12 @@ class HomePage extends StatefulWidget{
 class _HomePageState extends State<HomePage>{
   //banner images
   List _imageUrls = [ 'https://s1.ax1x.com/2020/10/02/0QBd9x.jpg', 'https://s1.ax1x.com/2020/10/02/0QBruD.jpg', 'https://s1.ax1x.com/2020/10/02/0QBgUA.jpg' ];
+  double appBarAlpha = 0;
   _onScroll(offset){
-    print(offset);
+    double alpha = offset/APPBAR_SCROLL_OFFSET;
+    if(alpha<0){ alpha = 0;
+    }else if(alpha > 1){ alpha = 1; }
+    setState(() { appBarAlpha = alpha; });
   }
   @override
   Widget build(BuildContext context) {
@@ -56,7 +63,7 @@ class _HomePageState extends State<HomePage>{
               )
           ),
           Opacity(
-            opacity: 1,
+            opacity: appBarAlpha,
             child:Container(
               height: 60,
               decoration: BoxDecoration(color: Colors.white),
