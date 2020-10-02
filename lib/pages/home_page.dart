@@ -9,13 +9,24 @@ class HomePage extends StatefulWidget{
 class _HomePageState extends State<HomePage>{
   //banner images
   List _imageUrls = [ 'https://s1.ax1x.com/2020/10/02/0QBd9x.jpg', 'https://s1.ax1x.com/2020/10/02/0QBruD.jpg', 'https://s1.ax1x.com/2020/10/02/0QBgUA.jpg' ];
+  _onScroll(offset){
+    print(offset);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: MediaQuery.removePadding(
         removeTop: true,
         context:context,
-        child: ListView(
+        child: NotificationListener(
+          onNotification:(scrollNotification){
+            //只有在满足是第0个元素，也就是只有 ListView 发生滚动的时候才执行 onScroll 函数
+            if(scrollNotification is ScrollUpdateNotification && scrollNotification.depth == 0){
+              //滚动且是列表滚动的时候
+              _onScroll(scrollNotification.metrics.pixels);
+            }
+          },
+          child: ListView(
             children: <Widget>[
               Container(
                 height: 160,
@@ -39,7 +50,8 @@ class _HomePageState extends State<HomePage>{
                 ),
               )
             ],
-          ),
+        ),
+        )
       )
     );
   }
