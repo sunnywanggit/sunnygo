@@ -12,12 +12,14 @@ class _HomePageState extends State<HomePage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 160,
-              child: Swiper(
+      body: MediaQuery.removePadding(
+        removeTop: true,
+        context:context,
+        child: ListView(
+            children: <Widget>[
+              Container(
+                height: 160,
+                child: Swiper(
                   itemCount: _imageUrls.length,
                   autoplay: true,
                   itemBuilder: (BuildContext context,int index){
@@ -27,11 +29,18 @@ class _HomePageState extends State<HomePage>{
                     );
                   },
                   pagination: SwiperPagination(),
+                ),
               ),
-            )
-          ],
-        ),
-      ),
+              Container(
+                height: 800,
+                child: ListTile(
+                  title: Text('hahaahahahah'),
+                  subtitle: Text('sub title'),
+                ),
+              )
+            ],
+          ),
+      )
     );
   }
 }
