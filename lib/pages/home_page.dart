@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/dao/home_dao.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'dart:convert';
 
 //当我们滚动的距离大于 100 的时候，听不的 bar 就完全变成白色
 const APPBAR_SCROLL_OFFSET = 100;
@@ -13,12 +15,36 @@ class _HomePageState extends State<HomePage>{
   //banner images
   List _imageUrls = [ 'https://s1.ax1x.com/2020/10/02/0QBd9x.jpg', 'https://s1.ax1x.com/2020/10/02/0QBruD.jpg', 'https://s1.ax1x.com/2020/10/02/0QBgUA.jpg' ];
   double appBarAlpha = 0;
+  //从服务端返回的首页结果
+  String resultString = "";
+
+  @override
+  void initState(){
+    super.initState();
+    loadData();
+  }
+
   _onScroll(offset){
     double alpha = offset/APPBAR_SCROLL_OFFSET;
     if(alpha<0){ alpha = 0;
     }else if(alpha > 1){ alpha = 1; }
     setState(() { appBarAlpha = alpha; });
   }
+
+  //加载从后端获取的数据
+  loadData(){
+    HomeDao.fetch().then((res){
+      setState((){
+        resultString = json.encode(res);
+      });
+    }).catchError((error){
+      setState((){
+        resultString = json.encode(error);
+      });
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +80,7 @@ class _HomePageState extends State<HomePage>{
                     Container(
                       height: 800,
                       child: ListTile(
-                        title: Text('hahaahahahah'),
+                        title: Text(resultString),
                         subtitle: Text('sub title'),
                       ),
                     )
