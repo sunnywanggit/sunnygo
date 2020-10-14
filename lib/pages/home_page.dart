@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/dao/home_dao.dart';
+import 'package:flutter_app/model/home_model.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'dart:convert';
 
@@ -32,16 +33,26 @@ class _HomePageState extends State<HomePage>{
   }
 
   //加载从后端获取的数据
-  loadData(){
-    HomeDao.fetch().then((res){
+  loadData() async {
+//    HomeDao.fetch().then((res){
+//      setState((){
+//        resultString = json.encode(res);
+//      });
+//    }).catchError((error){
+//      setState((){
+//        resultString = json.encode(error);
+//      });
+//    });
+    try{
+      HomeModel model = await HomeDao.fetch();
       setState((){
-        resultString = json.encode(res);
+        resultString = json.encode(model);
       });
-    }).catchError((error){
+    }catch(error){
       setState((){
         resultString = json.encode(error);
       });
-    });
+    }
   }
 
 
