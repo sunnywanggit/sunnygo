@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/model/grid_nav_model.dart';
 
-class GridNav extends StatefulWidget{
+class GridNav extends StatelessWidget{
   final GridNavModel gridNavModel;
   final String name;
 
@@ -9,13 +9,8 @@ class GridNav extends StatefulWidget{
   const GridNav({Key key,@required this.gridNavModel,this.name = 'sunywang'}) : super(key: key);
 
   @override
-  _GirdNavState createState()=> _GirdNavState();
-
-}
-
-class _GirdNavState extends State<GridNav>{
-  @override
   Widget build(BuildContext context) {
-    return Text(widget.name);
+    return Text(name);
   }
 }
+
