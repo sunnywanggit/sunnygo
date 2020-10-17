@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/dao/home_dao.dart';
+import 'package:flutter_app/model/common_model.dart';
 import 'package:flutter_app/model/home_model.dart';
+import 'package:flutter_app/widget/local_nav.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_app/dao/home_dao.dart';
+import 'package:flutter_app/widget/grid_nav.dart';
 import 'dart:convert';
 
 //当我们滚动的距离大于 100 的时候，听不的 bar 就完全变成白色
@@ -18,6 +21,7 @@ class _HomePageState extends State<HomePage>{
   double appBarAlpha = 0;
   //从服务端返回的首页结果
   String resultString = "";
+  List<CommonModel> localNavList = [];
 
   @override
   void initState(){
@@ -46,12 +50,10 @@ class _HomePageState extends State<HomePage>{
     try{
       HomeModel model = await HomeDao.fetch();
       setState((){
-        resultString = json.encode(model);
+        localNavList = model.localNavList;
       });
     }catch(error){
-      setState((){
-        resultString = json.encode(error);
-      });
+      print(error);
     }
   }
 
@@ -59,6 +61,7 @@ class _HomePageState extends State<HomePage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xfff2f2f2),
       body:Stack(
         children: <Widget>[
           MediaQuery.removePadding(
@@ -88,10 +91,16 @@ class _HomePageState extends State<HomePage>{
                         pagination: SwiperPagination(),
                       ),
                     ),
+                    Padding(
+                      child: LocalNav(localNavList: localNavList),
+                      padding: EdgeInsets.fromLTRB(7,4,7,4),
+
+
+                    ),
                     Container(
                       height: 800,
                       child: ListTile(
-                        title: Text(resultString),
+                        title: Text('resultString'),
                         subtitle: Text('sub title'),
                       ),
                     )
